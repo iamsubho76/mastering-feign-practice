@@ -1,0 +1,420 @@
+{
+	"info": {
+		"_postman_id": "ed6e5ca4-ce59-441c-b677-e84e57b14271",
+		"name": "Feign Client & Resilience4J Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2734175"
+	},
+	"item": [
+		{
+			"name": "User Session Service",
+			"item": [
+				{
+					"name": "Validate SessionId",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time is less than 10ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(10);",
+									"});",
+									"",
+									"pm.test(\"Successful GET request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200]);",
+									"})",
+									"",
+									"",
+									"pm.test(\"Valid session value\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.valid).to.eql(true);",
+									"    pm.expect(jsonData.sessionId).to.eql(\"ad8614c1-d3e9-4b62-971a-1e7b19345fcb\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://{{user-session-service-url}}/user-sessions/validate?sessionId={{session-id}}",
+							"protocol": "http",
+							"host": [
+								"{{user-session-service-url}}"
+							],
+							"path": [
+								"user-sessions",
+								"validate"
+							],
+							"query": [
+								{
+									"key": "sessionId",
+									"value": "{{session-id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Negative - Validate SessionId",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time is less than 10ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(10);",
+									"});",
+									"",
+									"pm.test(\"Successful GET request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200]);",
+									"})",
+									"",
+									"",
+									"pm.test(\"Valid session value\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.valid).to.eql(false);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://{{user-session-service-url}}/user-sessions/validate?sessionId={{invalid-session-id}}",
+							"protocol": "http",
+							"host": [
+								"{{user-session-service-url}}"
+							],
+							"path": [
+								"user-sessions",
+								"validate"
+							],
+							"query": [
+								{
+									"key": "sessionId",
+									"value": "{{invalid-session-id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Online Store Service",
+			"item": [
+				{
+					"name": "Get Health - Actuator",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time is less than 20ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(20);",
+									"});",
+									"",
+									"pm.test(\"Successful GET request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200]);",
+									"})",
+									"",
+									"",
+									"pm.test(\"Valid session value\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.status).to.eql(\"UP\");",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Session-Id",
+								"value": "{{session-id}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{online-store-service-url}}/actuator/health",
+							"protocol": "http",
+							"host": [
+								"{{online-store-service-url}}"
+							],
+							"path": [
+								"actuator",
+								"health"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Health - Application",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time is less than 20ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(20);",
+									"});",
+									"",
+									"pm.test(\"Successful GET request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200]);",
+									"})",
+									"",
+									"",
+									"pm.test(\"Valid session value\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.status).to.eql(\"UP\");",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Session-Id",
+								"value": "{{session-id}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{online-store-service-url}}/online-store/health",
+							"protocol": "http",
+							"host": [
+								"{{online-store-service-url}}"
+							],
+							"path": [
+								"online-store",
+								"health"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create New Product",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time is less than 20ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(40);",
+									"});",
+									"",
+									"pm.test(\"Successful GET request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200]);",
+									"})",
+									"",
+									"",
+									"pm.test(\"Valid session value\", function () {",
+									"    var reqData = JSON.parse(pm.request.body.raw);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.name).to.eql(reqData.name);",
+									"    pm.expect(jsonData.productId).is.not.undefined;",
+									"    pm.environment.set(\"productId\", jsonData.productId);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Session-Id",
+								"value": "{{session-id}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Test143V1\",\n    \"initialStock\": 15\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{online-store-service-url}}/online-store/products",
+							"protocol": "http",
+							"host": [
+								"{{online-store-service-url}}"
+							],
+							"path": [
+								"online-store",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buy Product",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time is less than 20ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(40);",
+									"});",
+									"",
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).not.to.be.oneOf([200]);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Session-Id",
+								"value": "{{session-id}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{online-store-service-url}}/online-store/products/{{productId}}/buy",
+							"protocol": "http",
+							"host": [
+								"{{online-store-service-url}}"
+							],
+							"path": [
+								"online-store",
+								"products",
+								"{{productId}}",
+								"buy"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid SessionId - Get Health",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time is less than 20ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(20);",
+									"});",
+									"",
+									"pm.test(\"Successful GET request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([403]);",
+									"})",
+									"",
+									"",
+									"pm.test(\"Valid session value\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.error).to.eql(\"Forbidden\");",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Session-Id",
+								"value": "{{invalid-session-id}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{online-store-service-url}}/actuator/health",
+							"protocol": "http",
+							"host": [
+								"{{online-store-service-url}}"
+							],
+							"path": [
+								"actuator",
+								"health"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Inventory Service",
+			"item": [
+				{
+					"name": "Create New Product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"Test1437\",\n    \"initialStock\":15\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{inventory-service-url}}/products",
+							"protocol": "http",
+							"host": [
+								"{{inventory-service-url}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

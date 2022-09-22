@@ -26,7 +26,9 @@ public class InventoryServiceErrorDecoder implements ErrorDecoder {
                 } catch (IOException e) {
                     throw new RuntimeException("Error while deserializing the response body", e);
                 }
-            } else if(response.status() == HttpStatus.NOT_FOUND.value()){
+            }
+        } else if("InventoryServiceClient#buy(String,int,OffsetDateTime)".equals(methodKey)) {
+            if(response.status() == HttpStatus.NOT_FOUND.value()){
                 try {
                     String responseBody = new String(response.body().asInputStream().readAllBytes(), StandardCharsets.UTF_8);
                     ErrorResponse errorResponse = objectMapper.readValue(responseBody, ErrorResponse.class);
