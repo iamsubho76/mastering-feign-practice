@@ -1,6 +1,6 @@
 package com.arnoldgalovics.inventory.service.handler;
 
-import com.arnoldgalovics.inventory.service.error.ProductnotFoundException;
+import com.arnoldgalovics.inventory.service.error.ProductNotFoundException;
 import com.arnoldgalovics.inventory.service.model.ErrorResponse;
 import com.arnoldgalovics.inventory.service.error.ProductCreationFailedException;
 import org.springframework.http.HttpStatus;
@@ -16,8 +16,8 @@ public class ApiExceptionHandler {
                 .body(new ErrorResponse(e.getMessage()));
     }
 
-    @ExceptionHandler({ProductnotFoundException.class})
-    public ResponseEntity<ErrorResponse> handleProductBuyFailure(ProductnotFoundException e) {
+    @ExceptionHandler({ProductNotFoundException.class})
+    public ResponseEntity<ErrorResponse> handleProductBuyFailure(ProductNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(new ErrorResponse(e.getMessage()));
     }

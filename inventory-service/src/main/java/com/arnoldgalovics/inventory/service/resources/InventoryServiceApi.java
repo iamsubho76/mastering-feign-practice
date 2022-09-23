@@ -1,6 +1,6 @@
 package com.arnoldgalovics.inventory.service.resources;
 
-import com.arnoldgalovics.inventory.service.error.ProductnotFoundException;
+import com.arnoldgalovics.inventory.service.error.ProductNotFoundException;
 import com.arnoldgalovics.inventory.service.model.Product;
 import com.arnoldgalovics.inventory.service.error.ProductCreationFailedException;
 import com.arnoldgalovics.inventory.service.dto.CreateProductRequest;
@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.file.ProviderNotFoundException;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,7 +47,7 @@ public class InventoryServiceApi {
                                  @RequestParam("boughtAt") OffsetDateTime boughtAt) {
         Product product = productMap.get(productId);
         if (Objects.isNull(product)) {
-            throw new ProductnotFoundException("Product not found");
+            throw new ProductNotFoundException("Product not found");
         }
         int currentStock = product.getStock();
         product.setStock(currentStock - amount);

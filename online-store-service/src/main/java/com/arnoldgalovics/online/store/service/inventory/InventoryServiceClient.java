@@ -1,7 +1,10 @@
 package com.arnoldgalovics.online.store.service.inventory;
 
+import com.arnoldgalovics.online.store.service.common.error.HandleFeignException;
 import com.arnoldgalovics.online.store.service.common.helper.OffsetDateTimeToMillisFormatter;
 import com.arnoldgalovics.online.store.service.common.model.BaseClient;
+import com.arnoldgalovics.online.store.service.inventory.error.handler.ProductCreationFailedExceptionHandler;
+import com.arnoldgalovics.online.store.service.inventory.error.handler.ProductNotFoundExceptionHandler;
 import com.arnoldgalovics.online.store.service.inventory.model.CreateProductRequest;
 import com.arnoldgalovics.online.store.service.inventory.model.CreateProductResponse;
 import feign.Headers;
@@ -17,9 +20,11 @@ import java.time.OffsetDateTime;
 @FeignClient(name = "inventory-service", url = "http://localhost:8081")
 public interface InventoryServiceClient extends BaseClient {
     @PostMapping("/products")
+    @HandleFeignException(ProductCreationFailedExceptionHandler.class)
     CreateProductResponse createProduct(CreateProductRequest request);
 
     @PostMapping("/products/{productId}/buy?amount={amount}&boughtAt={boughtAt}")
+    @HandleFeignException(ProductNotFoundExceptionHandler.class)
     void buy(@PathVariable("productId") String productId,
              @RequestParam("amount") int amount,
              @RequestParam(value = "boughtAt") OffsetDateTime boughtAt);
