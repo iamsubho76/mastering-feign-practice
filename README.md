@@ -3,6 +3,7 @@ The repository contains the practice content for the Mastering microservice comm
 
 Here you can access the course: [link](https://www.udemy.com/course/mastering-microservice-communication-with-spring-cloud-feign/?referralCode=437693FE520ABDF6F4E3)
 
+Also see the advantages of Spring Cloud Feign over RestTemplate [link](https://stackoverflow.com/questions/46884362/what-are-the-advantages-and-disadvantages-of-using-feign-over-resttemplate) 
 ## Overview
 The courses focuses on building an example microservice system with resilient HTTP communication using Feign and Spring Cloud OpenFeign along with Netflix Eureka and Resilience4J.
 
