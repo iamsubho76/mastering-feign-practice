@@ -25,28 +25,4 @@ public class FeignConfiguration implements FeignFormatterRegistrar {
     public Logger.Level loggerLevel() {
         return Logger.Level.FULL;
     }
-
-    //As Spring Cloud Open Feign does not support Async call as like we have CompletableFuture in UserSessionClient, so wee need to use below bean to achive it
-    //but it is recommended not to use this Async version as it will not work with Eureka, LoadBalancer
-    //so we should use original blocking version i.e; without using CompletableFuture
-    @Bean
-    public Targeter feignTargeter(){
-        return new Targeter() {
-            @Override
-            public <T> T target(FeignClientFactoryBean factory, Feign.Builder builder, FeignContext context, Target.HardCodedTarget<T> target) {
-                String contextId = factory.getContextId();
-                AsyncFeign.AsyncBuilder<Object> objectAsyncBuilder = AsyncFeign.asyncBuilder();
-                objectAsyncBuilder.decoder(context.getInstance(contextId, Decoder.class));
-                objectAsyncBuilder.errorDecoder(context.getInstance(contextId, ErrorDecoder.class));
-                if(factory.isDecode404()){
-                    objectAsyncBuilder.decode404();
-                }
-                ReflectionUtils.doWithFields(AsyncFeign.AsyncBuilder.class, field -> {
-                    ReflectionUtils.makeAccessible(field);
-                    ReflectionUtils.setField(field, objectAsyncBuilder, builder);
-                }, field -> field.getName().equalsIgnoreCase("builder"));
-                return objectAsyncBuilder.target(target);
-            }
-        };
-    }
 }

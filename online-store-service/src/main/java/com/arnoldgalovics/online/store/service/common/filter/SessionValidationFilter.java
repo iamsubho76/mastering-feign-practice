@@ -28,12 +28,8 @@ public class SessionValidationFilter implements Filter {
             httpServletResponse.sendError(HttpStatus.FORBIDDEN.value());
         } else {
             UUID sessionIdUUID = UUID.fromString(sessionIdHeader);
-            //Async HTTP communication with Feign that is why we use CompletableFuture
-            CompletableFuture<UserSessionValidatorResponse> responseFuture = userSessionClient.validateSession(sessionIdUUID);
-            // Some kind of expensive operation
-            UserSessionValidatorResponse userSessionValidatorResponse = null;
+           UserSessionValidatorResponse userSessionValidatorResponse = userSessionClient.validateSession(sessionIdUUID);
             try {
-                userSessionValidatorResponse = responseFuture.get();
                 if (!userSessionValidatorResponse.isValid()) {
                     httpServletResponse.sendError(HttpStatus.FORBIDDEN.value());
                 } else {
