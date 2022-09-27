@@ -17,7 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.OffsetDateTime;
 
-@FeignClient(name = "inventory-service", url = "http://localhost:8081")
+//The URL is not required as the logical name 'inventory-service' is registered in Eureka which is sufficient to find the service
+@FeignClient(name = "inventory-service")
 public interface InventoryServiceClient extends BaseClient {
     @PostMapping("/products")
     @HandleFeignException(ProductCreationFailedExceptionHandler.class)

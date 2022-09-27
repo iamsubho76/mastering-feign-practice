@@ -3,6 +3,13 @@ The repository contains the practice content for the Mastering microservice comm
 
 Here you can access the course: [link](https://www.udemy.com/course/mastering-microservice-communication-with-spring-cloud-feign/?referralCode=437693FE520ABDF6F4E3)
 
+Here you can see the circuitBreaker docs: [link](https://resilience4j.readme.io/docs/circuitbreaker)
+
+localhost Eureka URL: [link](http://localhost:8761/dashboard)
+
+To run the multiple instances we can configure like this
+![img.png](img.png)
+
 ## Overview
 The courses focuses on building an example microservice system with resilient HTTP communication using Feign and Spring Cloud OpenFeign along with Netflix Eureka and Resilience4J.
 

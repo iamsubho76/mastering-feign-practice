@@ -19,16 +19,23 @@ repositories {
 }
 
 ext {
-	set('springCloudVersion', '2020.0.4')
+	set('springCloudVersion', "2020.0.4")
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+	implementation 'org.springframework.cloud:spring-cloud-starter-loadbalancer'
+	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+	implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j'
+	implementation 'io.github.openfeign:feign-micrometer:11.9.1'
+	implementation 'io.micrometer:micrometer-registry-jmx:1.9.4'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'com.github.tomakehurst:wiremock-jre8:2.34.0'
+	testImplementation 'org.testcontainers:testcontainers:1.17.3'
 }
 
 dependencyManagement {

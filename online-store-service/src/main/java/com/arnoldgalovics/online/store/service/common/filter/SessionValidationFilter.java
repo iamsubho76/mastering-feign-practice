@@ -3,6 +3,7 @@ package com.arnoldgalovics.online.store.service.common.filter;
 import com.arnoldgalovics.online.store.service.session.UserSessionClient;
 import com.arnoldgalovics.online.store.service.session.model.UserSessionValidatorResponse;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -10,6 +11,8 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -27,8 +30,13 @@ public class SessionValidationFilter implements Filter {
         if (sessionIdHeader == null) {
             httpServletResponse.sendError(HttpStatus.FORBIDDEN.value());
         } else {
+            String sleepTime = httpServletRequest.getHeader("X-Sleep");
+            Map<String, Object> headerMap = new HashMap<>();
+            if(StringUtils.isNotEmpty(sleepTime)){
+                headerMap.put("X-Sleep", sleepTime);
+            }
             UUID sessionIdUUID = UUID.fromString(sessionIdHeader);
-           UserSessionValidatorResponse userSessionValidatorResponse = userSessionClient.validateSession(sessionIdUUID);
+           UserSessionValidatorResponse userSessionValidatorResponse = userSessionClient.validateSession(sessionIdUUID, headerMap);
             try {
                 if (!userSessionValidatorResponse.isValid()) {
                     httpServletResponse.sendError(HttpStatus.FORBIDDEN.value());
